@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Связи
+  favorites UserFavorite[]
+  history   UserHistory[]
+  ratings   UserRating[]
+
+  @@map("users")
+}
+
+model Movie {
+  id               Int      @id // kinopoiskId
+  nameRu           String?
+  nameEn           String?
+  nameOriginal     String?
+  posterUrl        String?
+  posterUrlPreview String?
+  coverUrl         String?
+  year             Int?
+  filmLength       Int?
+  slogan           String?
+  description      String?  @db.Text
+  shortDescription String?  @db.Text
+  ratingKinopoisk  Float?
+  ratingImdb       Float?
+  ratingAgeLimits  String?
+  type             String // FILM, TV_SERIES, etc.
+  webUrl           String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Связи
+  countries MovieCountry[]
+  genres    MovieGenre[]
+  favorites UserFavorite[]
+  history   UserHistory[]
+  ratings   UserRating[]
+
+  @@map("movies")
+}
+
+model Country {
+  id     Int            @id @default(autoincrement())
+  name   String         @unique
+  movies MovieCountry[]
+
+  @@map("countries")
+}
+
+model Genre {
+  id     Int          @id @default(autoincrement())
+  name   String       @unique
+  movies MovieGenre[]
+
+  @@map("genres")
+}
+
+model MovieCountry {
+  movieId   Int
+  countryId Int
+  movie     Movie   @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  country   Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+
+  @@id([movieId, countryId])
+  @@map("movie_countries")
+}
+
+model MovieGenre {
+  movieId Int
+  genreId Int
+  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  genre   Genre @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([movieId, genreId])
+  @@map("movie_genres")
+}
+
+model UserFavorite {
+  id        String   @id @default(cuid())
+  userId    String
+  movieId   Int
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId])
+  @@map("user_favorites")
+}
+
+model UserHistory {
+  id        String   @id @default(cuid())
+  userId    String
+  movieId   Int
+  watchedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@map("user_history")
+}
+
+model UserRating {
+  id        String   @id @default(cuid())
+  userId    String
+  movieId   Int
+  rating    Int // 1-10
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId])
+  @@map("user_ratings")
+}
