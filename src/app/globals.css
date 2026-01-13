@@ -125,12 +125,11 @@
 
   body {
     @apply bg-background text-foreground;
-    overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
   }
 
   html {
-    overflow-x: hidden;
+    scroll-behavior: smooth;
   }
 
   a,

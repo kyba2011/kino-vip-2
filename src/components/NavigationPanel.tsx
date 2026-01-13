@@ -26,6 +26,7 @@ const navigationItems = [
 export default function NavigationPanel() {
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
+  const [lastWatched, setLastWatched] = useState<string | null>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -34,6 +35,17 @@ export default function NavigationPanel() {
 
     checkMobile();
     window.addEventListener("resize", checkMobile);
+
+    // Загружаем последний просмотренный фильм
+    const lastMovie = localStorage.getItem("lastWatched");
+    if (lastMovie) {
+      try {
+        const movieData = JSON.parse(lastMovie);
+        setLastWatched(movieData.title);
+      } catch (e) {
+        console.error("Error parsing last watched movie:", e);
+      }
+    }
 
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
@@ -50,8 +62,8 @@ export default function NavigationPanel() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center justify-center p-3 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95 ${
-                  isActive ? "bg-accent text-primary" : "hover:bg-accent"
+                className={`flex items-center justify-center p-3 rounded-full transition-all duration-200 hover:scale-110 active:scale-95 ${
+                  isActive ? "bg-accent/50 text-primary" : "hover:bg-accent/30"
                 }`}
                 title={item.label}
               >
@@ -78,7 +90,7 @@ export default function NavigationPanel() {
                 key={item.href}
                 href={item.href}
                 className={`flex items-center justify-center p-3 rounded-full transition-all duration-200 hover:scale-110 group relative ${
-                  isActive ? "bg-accent text-primary" : "hover:bg-accent"
+                  isActive ? "bg-accent/50 text-primary" : "hover:bg-accent/30"
                 }`}
                 title={item.label}
               >
@@ -98,14 +110,14 @@ export default function NavigationPanel() {
         {/* Дополнительная информация - только иконка */}
         <div className="p-2 pb-4">
           <div
-            className="flex items-center justify-center p-3 rounded-lg group relative"
-            title="Последний просмотр"
+            className="flex items-center justify-center p-3 rounded-full group relative cursor-pointer hover:bg-accent/30 transition-all duration-200"
+            title={lastWatched ? `Последний: ${lastWatched}` : "Нет просмотров"}
           >
             <Clock className="w-6 h-6 text-muted-foreground" />
 
             {/* Tooltip с информацией */}
             <div className="absolute left-full ml-2 px-2 py-1 bg-popover text-popover-foreground text-sm rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
-              Последний: Мстители
+              {lastWatched ? `Последний: ${lastWatched}` : "Нет просмотров"}
             </div>
           </div>
         </div>

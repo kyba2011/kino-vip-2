@@ -38,6 +38,16 @@ export default function WatchPage({
         ].slice(0, 50);
 
         localStorage.setItem("history", JSON.stringify(newHistory));
+
+        // Сохраняем последний просмотренный фильм
+        localStorage.setItem(
+          "lastWatched",
+          JSON.stringify({
+            title: movieData.nameRu || movieData.nameOriginal,
+            id: movieData.kinopoiskId,
+            watchedAt: new Date().toISOString(),
+          })
+        );
       } catch (error) {
         console.error("Error fetching movie:", error);
       } finally {
@@ -168,7 +178,11 @@ export default function WatchPage({
                   <h3 className="font-semibold mb-2">Жанры</h3>
                   <div className="flex flex-wrap gap-2 ">
                     {movie.genres.map((genre, index) => (
-                      <Badge key={index} variant="outline" style={{ paddingTop: "1px", paddingBottom: "4px" }}>
+                      <Badge
+                        key={index}
+                        variant="outline"
+                        style={{ paddingTop: "1px", paddingBottom: "4px" }}
+                      >
                         {genre.genre}
                       </Badge>
                     ))}
