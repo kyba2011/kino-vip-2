@@ -49,7 +49,11 @@ export default function FavoritesPage() {
     const newFavorites = favorites.filter((favId) => favId !== id);
     localStorage.setItem("favorites", JSON.stringify(newFavorites));
     setFavorites(newFavorites);
-    setMovies(movies.filter((movie) => movie.kinopoiskId !== id));
+    setMovies(
+      movies.filter(
+        (movie) => movie.kinopoiskId !== id && movie.kinopoiskId !== undefined
+      )
+    );
   };
 
   const clearFavorites = () => {
@@ -123,7 +127,7 @@ export default function FavoritesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {movies.map((movie) => (
             <Card
-              key={movie.kinopoiskId}
+              key={movie.kinopoiskId ?? movie.filmId}
               className="group cursor-pointer hover:scale-105 transition-transform duration-200"
             >
               <CardContent className="p-0">
@@ -142,7 +146,9 @@ export default function FavoritesPage() {
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-all duration-200 rounded-t-lg flex items-center justify-center">
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-2">
                       <Button asChild size="sm">
-                        <Link href={`/watch/${movie.kinopoiskId}`}>
+                        <Link
+                          href={`/watch/${movie.kinopoiskId ?? movie.filmId}`}
+                        >
                           <Play className="w-4 h-4" />
                         </Link>
                       </Button>
@@ -151,7 +157,9 @@ export default function FavoritesPage() {
                         variant="destructive"
                         onClick={(e) => {
                           e.preventDefault();
-                          removeFromFavorites(movie.kinopoiskId);
+                          if (movie.kinopoiskId) {
+                            removeFromFavorites(movie.kinopoiskId);
+                          }
                         }}
                       >
                         <Heart className="w-4 h-4 fill-current" />
@@ -177,7 +185,7 @@ export default function FavoritesPage() {
                 </div>
 
                 <div className="p-4">
-                  <Link href={`/about/${movie.kinopoiskId}`}>
+                  <Link href={`/about/${movie.kinopoiskId ?? movie.filmId}`}>
                     <h3 className="font-semibold text-sm mb-2 line-clamp-2 hover:text-primary transition-colors">
                       {movie.nameRu || movie.nameOriginal}
                     </h3>

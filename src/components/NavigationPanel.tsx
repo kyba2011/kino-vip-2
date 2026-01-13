@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Separator } from "./ui/separator";
 import {
@@ -24,6 +25,7 @@ const navigationItems = [
 
 export default function NavigationPanel() {
   const [isMobile, setIsMobile] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -39,15 +41,18 @@ export default function NavigationPanel() {
   if (isMobile) {
     // Мобильная навигация внизу - только иконки
     return (
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur border-t border-border">
-        <div className="flex items-center justify-around px-2 py-3">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-t border-border/40">
+        <div className="flex items-center justify-evenly px-5 sm:px-10 py-3">
           {navigationItems.slice(0, 5).map((item) => {
             const Icon = item.icon;
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center justify-center p-3 rounded-lg hover:bg-accent transition-colors"
+                className={`flex items-center justify-center p-3 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95 ${
+                  isActive ? "bg-accent text-primary" : "hover:bg-accent"
+                }`}
                 title={item.label}
               >
                 <Icon className="w-6 h-6" />
@@ -61,17 +66,20 @@ export default function NavigationPanel() {
 
   // Десктопная навигация слева - всегда открыта, только иконки
   return (
-    <nav className="fixed left-0 top-16 bottom-0 z-30 w-16 bg-background/95 backdrop-blur border-r border-border">
+    <nav className="fixed left-0 top-16 bottom-0 z-30 w-16 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-r border-border/40">
       <div className="flex flex-col h-full">
         {/* Навигационные элементы */}
         <div className="flex-1 p-2 space-y-2 pt-4">
           {navigationItems.map((item) => {
             const Icon = item.icon;
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center justify-center p-3 rounded-lg hover:bg-accent transition-colors group relative"
+                className={`flex items-center justify-center p-3 rounded-full transition-all duration-200 hover:scale-110 group relative ${
+                  isActive ? "bg-accent text-primary" : "hover:bg-accent"
+                }`}
                 title={item.label}
               >
                 <Icon className="w-6 h-6" />

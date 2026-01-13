@@ -120,8 +120,73 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    -webkit-tap-highlight-color: transparent;
   }
+
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+}
+
+/* Stack Auth mobile optimizations */
+@layer components {
+
+  /* Адаптация форм Stack Auth для мобильных */
+  [data-stack-auth],
+  [data-stack-auth]>* {
+    @apply w-full min-w-full;
+  }
+
+  [data-stack-auth] input,
+  [data-stack-auth] input[type="text"],
+  [data-stack-auth] input[type="email"],
+  [data-stack-auth] input[type="password"] {
+    @apply text-sm sm:text-base w-full min-w-full px-3 py-2;
+  }
+
+  [data-stack-auth] button {
+    @apply text-sm sm:text-base py-2 sm:py-3 w-full min-w-full;
+  }
+
+  [data-stack-auth] h1,
+  [data-stack-auth] h2 {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+
+  [data-stack-auth] form {
+    @apply w-full min-w-full;
+  }
+
+  [data-stack-auth]>div {
+    @apply w-full min-w-full;
+  }
+}
+
+
+/* Дополнительные стили для Stack Auth на мобильных */
+@media (max-width: 640px) {
+  [data-stack-auth] * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  [data-stack-auth] input,
+  [data-stack-auth] button,
+  [data-stack-auth] form,
+  [data-stack-auth]>div {
+    width: 100% !important;
+    min-width: 100% !important;
   }
 }

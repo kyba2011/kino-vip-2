@@ -95,10 +95,7 @@ export default function Hero() {
     return (
       <div className="space-y-4">
         {/* Скелетон главного баннера */}
-        <div
-          className="relative w-full"
-          style={{ height: "calc(100vh - 64px)" }}
-        >
+        <div className="relative w-full h-[500px] sm:h-[calc(100vh-64px)]">
           <Skeleton className="w-full h-full" />
         </div>
 
@@ -121,12 +118,7 @@ export default function Hero() {
     <div className="space-y-2">
       {/* Главный баннер */}
       {currentMovie && (
-        <div
-          className="relative overflow-hidden"
-          style={{
-            height: "calc(100vh - 64px)",
-          }}
-        >
+        <div className="relative overflow-hidden h-[500px] sm:h-[calc(100vh-64px)]">
           {/* Фоновое изображение с блюром */}
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-xl scale-110"
@@ -156,9 +148,9 @@ export default function Hero() {
           <div className="absolute inset-0 bg-black/60" />
           <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/40 to-transparent" />
 
-          <div className="relative h-full flex items-center ml-20">
-            <div className="container mx-auto px-4">
-              <div className="max-w-2xl space-y-6">
+          <div className="relative h-full flex items-center ml-4 sm:ml-10 md:ml-20">
+            <div className="container mx-auto px-2 sm:px-4">
+              <div className="max-w-2xl space-y-3 sm:space-y-6">
                 <div className="flex items-center space-x-4">
                   <Badge
                     className="bg-red-600 hover:bg-red-700 text-white text-center px-2"
@@ -169,26 +161,26 @@ export default function Hero() {
                   <div className="flex items-center space-x-4 text-sm text-gray-300">
                     {getMovieRating(currentMovie) && (
                       <div className="flex items-center space-x-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-yellow-400 text-yellow-400" />
                         <span>{getMovieRating(currentMovie)}</span>
                       </div>
                     )}
                     {currentMovie.year && (
                       <div className="flex items-center space-x-1">
-                        <Calendar className="w-4 h-4" />
+                        <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span>{currentMovie.year}</span>
                       </div>
                     )}
                     {currentMovie.filmLength && (
                       <div className="flex items-center space-x-1">
-                        <Clock className="w-4 h-4" />
+                        <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span>{currentMovie.filmLength} мин</span>
                       </div>
                     )}
                   </div>
                 </div>
 
-                <h1 className="text-5xl font-bold text-white">
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold text-white">
                   {currentMovie.nameRu || currentMovie.nameOriginal}
                 </h1>
 
@@ -197,7 +189,7 @@ export default function Hero() {
                     <Badge
                       key={genre.genre}
                       variant="outline"
-                      className="text-white border-white/30 px-2 text-center"
+                      className="text-white border-white/30 px-2 text-center text-xs sm:text-sm"
                       style={{ paddingTop: "1px", paddingBottom: "4px" }}
                     >
                       {genre.genre}
@@ -206,7 +198,7 @@ export default function Hero() {
                 </div>
 
                 {currentMovie.description && (
-                  <p className="text-lg text-gray-200 leading-relaxed max-w-xl">
+                  <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-200 leading-relaxed max-w-xl line-clamp-3 sm:line-clamp-4 md:line-clamp-none">
                     {currentMovie.description}
                   </p>
                 )}

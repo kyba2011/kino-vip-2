@@ -25,10 +25,11 @@ import {
   LogOut,
   UserRoundPlus,
 } from "lucide-react";
-import { UserButton, useUser } from "@stackframe/stack";
+import { UserButton, useUser, useStackApp } from "@stackframe/stack";
 
 function Header() {
   const user = useUser();
+  const app = useStackApp();
   const [currentLanguage, setCurrentLanguage] = useState("ru");
 
   const languages = [
@@ -41,21 +42,21 @@ function Header() {
 
   return (
     <header className="sticky top-0 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 z-50">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="w-full mx-auto px-2 sm:px-4">
+        <div className="flex items-center justify-between h-16 gap-2">
           {/* Логотип */}
-          <div className="flex items-center">
+          <div className="flex items-center shrink-0">
             <Link
               href="/"
-              className="flex items-center space-x-2 text-2xl font-bold text-primary font-mono tracking-wider hover:text-primary/80 transition-colors"
+              className="flex items-center space-x-1 sm:space-x-2 text-lg sm:text-2xl font-bold text-primary font-mono tracking-wider hover:text-primary/80 transition-colors"
             >
-              <Film className="w-8 h-8" />
-              <span>KINO.VIP</span>
+              <Film className="w-6 h-6 sm:w-8 sm:h-8" />
+              <span className="hidden md:inline">KINO.VIP</span>
             </Link>
           </div>
 
           {/* Поиск */}
-          <div className="flex-1 max-w-md mx-8">
+          <div className="flex-1 max-w-md mx-2 sm:mx-8">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -81,18 +82,13 @@ function Header() {
           </div>
 
           {/* Навигация */}
-        
 
           {/* Авторизация / Профиль */}
           <div className="flex items-center space-x-3">
             {/* Языки */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center"
-                >
+                <Button variant="ghost" size="sm" className="flex items-center">
                   <Languages className="w-4 h-4" />
                   <span className="hidden sm:inline">
                     {
@@ -125,23 +121,13 @@ function Header() {
               <>
                 {/*Sign Button*/}
                 <Button
-                  variant="ghost"
-                  className="flex items-center gap-2"
-                  asChild
-                >
-                  <Link href="/sign-in">
-                    <LogIn className="w-4 h-4" />
-                    <span className="inline">Sign In</span>
-                  </Link>
-                </Button>
-                <Button
                   variant="outline"
                   className="flex items-center gap-2"
                   asChild
                 >
-                    <Link href="/sign-up">
-                    <UserRoundPlus className="w-4 h-4" />
-                    <span className="inline">Sign Up</span>
+                  <Link href={app.urls.signIn}>
+                    <LogIn className="w-3 h-3  " />
+                    <span className="hidden sm:inline">Sign In</span>
                   </Link>
                 </Button>
               </>
