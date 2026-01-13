@@ -39,7 +39,13 @@ export default function RootLayout({
             >
               <Header />
             </Suspense>
-            <NavigationPanel />
+            <Suspense
+              fallback={
+                <div className="fixed left-0 top-16 bottom-0 z-30 w-16 bg-background/95 border-r border-border/40" />
+              }
+            >
+              <NavigationPanel />
+            </Suspense>
             <main className="md:ml-16 pb-10 md:pb-0 min-h-screen">
               {children}
             </main>

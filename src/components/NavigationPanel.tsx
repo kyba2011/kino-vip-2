@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useUser, useStackApp } from "@stackframe/stack";
 import { Separator } from "./ui/separator";
 import {
   Home,
@@ -27,6 +28,8 @@ export default function NavigationPanel() {
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const [lastWatched, setLastWatched] = useState<string | null>(null);
+  const user = useUser();
+  const app = useStackApp();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -53,15 +56,20 @@ export default function NavigationPanel() {
   if (isMobile) {
     // Мобильная навигация внизу - только иконки
     return (
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-t border-border/40">
+      <nav className="fixed -bottom-0.5 left-0 right-0 z-40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-t border-border/40">
         <div className="flex items-center justify-evenly px-5 sm:px-10 py-3">
           {navigationItems.slice(0, 5).map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
+            const requiresAuth =
+              item.href === "/history" || item.href === "/favorites";
+            const linkHref =
+              requiresAuth && !user ? app.urls.signIn : item.href;
+
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={linkHref}
                 className={`flex items-center justify-center p-3 rounded-full transition-all duration-200 hover:scale-110 active:scale-95 ${
                   isActive ? "bg-accent/50 text-primary" : "hover:bg-accent/30"
                 }`}
@@ -85,10 +93,15 @@ export default function NavigationPanel() {
           {navigationItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
+            const requiresAuth =
+              item.href === "/history" || item.href === "/favorites";
+            const linkHref =
+              requiresAuth && !user ? app.urls.signIn : item.href;
+
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={linkHref}
                 className={`flex items-center justify-center p-3 rounded-full transition-all duration-200 hover:scale-110 group relative ${
                   isActive ? "bg-accent/50 text-primary" : "hover:bg-accent/30"
                 }`}
