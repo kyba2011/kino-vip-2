@@ -1,0 +1,46 @@
+{
+  "header": {
+    "search": "Поиск фильмов, сериалов...",
+    "signIn": "Войти",
+    "signOut": "Выйти",
+    "profile": "Профиль"
+  },
+  "navigation": {
+    "home": "Главная",
+    "search": "Поиск",
+    "favorites": "Избранное",
+    "history": "История",
+    "top": "Топ",
+    "lastWatched": "Последний",
+    "noViews": "Нет просмотров"
+  },
+  "hero": {
+    "recommended": "Рекомендуем",
+    "watch": "Смотреть",
+    "moreInfo": "Подробнее",
+    "popularMovies": "Популярные фильмы",
+    "viewAll": "Смотреть все",
+    "minutes": "мин"
+  },
+  "about": {
+    "film": "Фильм",
+    "series": "Сериал",
+    "watchOnline": "Смотреть онлайн",
+    "addToFavorites": "Добавить в избранное",
+    "removeFromFavorites": "Убрать из избранного",
+    "year": "Год",
+    "genres": "Жанры",
+    "countries": "Страны",
+    "description": "Описание",
+    "additionalInfo": "Дополнительная информация",
+    "age": "Возраст",
+    "type": "Тип",
+    "notFound": "Фильм не найден",
+    "backToHome": "Вернуться на главную"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "noImage": "Нет изображения"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "header": {
+    "search": "Search movies, series...",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "profile": "Profile"
+  },
+  "navigation": {
+    "home": "Home",
+    "search": "Search",
+    "favorites": "Favorites",
+    "history": "History",
+    "top": "Top",
+    "lastWatched": "Last",
+    "noViews": "No views"
+  },
+  "hero": {
+    "recommended": "Recommended",
+    "watch": "Watch",
+    "moreInfo": "More Info",
+    "popularMovies": "Popular Movies",
+    "viewAll": "View All",
+    "minutes": "min"
+  },
+  "about": {
+    "film": "Film",
+    "series": "Series",
+    "watchOnline": "Watch Online",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites",
+    "year": "Year",
+    "genres": "Genres",
+    "countries": "Countries",
+    "description": "Description",
+    "additionalInfo": "Additional Information",
+    "age": "Age",
+    "type": "Type",
+    "notFound": "Movie not found",
+    "backToHome": "Back to Home"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "noImage": "No Image"
+  }
+}

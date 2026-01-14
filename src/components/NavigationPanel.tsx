@@ -1,35 +1,28 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { useState, useEffect } from "react";
 import { useUser, useStackApp } from "@stackframe/stack";
+import { useTranslations } from "next-intl";
 import { Separator } from "./ui/separator";
-import {
-  Home,
-  Search,
-  History,
-  Heart,
-  Film,
-  Tv,
-  Star,
-  Clock,
-} from "lucide-react";
-
-const navigationItems = [
-  { icon: Home, label: "Главная", href: "/" },
-  { icon: Search, label: "Поиск", href: "/search" },
-  { icon: Star, label: "Топ", href: "/top" },
-  { icon: History, label: "История", href: "/history" },
-  { icon: Heart, label: "Избранное", href: "/favorites" },
-];
+import { Home, Search, History, Heart, Star, Clock } from "lucide-react";
 
 export default function NavigationPanel() {
+  const t = useTranslations("navigation");
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const [lastWatched, setLastWatched] = useState<string | null>(null);
   const user = useUser();
   const app = useStackApp();
+
+  const navigationItems = [
+    { icon: Home, label: t("home"), href: "/" },
+    { icon: Search, label: t("search"), href: "/search" },
+    { icon: Star, label: t("top"), href: "/top" },
+    { icon: History, label: t("history"), href: "/history" },
+    { icon: Heart, label: t("favorites"), href: "/favorites" },
+  ];
 
   useEffect(() => {
     const checkMobile = () => {
@@ -124,13 +117,17 @@ export default function NavigationPanel() {
         <div className="p-2 pb-4">
           <div
             className="flex items-center justify-center p-3 rounded-full group relative cursor-pointer hover:bg-accent/30 transition-all duration-200"
-            title={lastWatched ? `Последний: ${lastWatched}` : "Нет просмотров"}
+            title={
+              lastWatched ? `${t("lastWatched")}: ${lastWatched}` : t("noViews")
+            }
           >
             <Clock className="w-6 h-6 text-muted-foreground" />
 
             {/* Tooltip с информацией */}
             <div className="absolute left-full ml-2 px-2 py-1 bg-popover text-popover-foreground text-sm rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
-              {lastWatched ? `Последний: ${lastWatched}` : "Нет просмотров"}
+              {lastWatched
+                ? `${t("lastWatched")}: ${lastWatched}`
+                : t("noViews")}
             </div>
           </div>
         </div>

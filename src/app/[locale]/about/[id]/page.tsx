@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,13 +18,18 @@ import {
 } from "lucide-react";
 import { kinopoiskAPI } from "@/lib/api";
 import { MovieDetails } from "@/types/movie";
+import { translateMovie } from "@/lib/translate";
+import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 export default function AboutPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }) {
   const { id } = use(params);
+  const locale = useLocale();
+  const t = useTranslations("about");
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -33,7 +37,13 @@ export default function AboutPage({
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const movieData = await kinopoiskAPI.getMovieDetails(parseInt(id));
+        let movieData = await kinopoiskAPI.getMovieDetails(parseInt(id));
+
+        // Переводим фильм если язык не русский
+        if (locale !== "ru") {
+          movieData = await translateMovie(movieData, locale);
+        }
+
         setMovie(movieData);
 
         // Проверяем, есть ли фильм в избранном (из localStorage)
@@ -47,7 +57,7 @@ export default function AboutPage({
     };
 
     fetchMovie();
-  }, [id]);
+  }, [id, locale]);
 
   const toggleFavorite = () => {
     if (!movie) return;
@@ -104,9 +114,9 @@ export default function AboutPage({
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Фильм не найден</h1>
+          <h1 className="text-2xl font-bold mb-4">{t("notFound")}</h1>
           <Button asChild>
-            <Link href="/">Вернуться на главную</Link>
+            <Link href="/">{t("backToHome")}</Link>
           </Button>
         </div>
       </div>
@@ -142,7 +152,7 @@ export default function AboutPage({
                   >
                     <Link href={`/watch/${movie.kinopoiskId}`}>
                       <Play className="w-4 h-4 mr-2" />
-                      Смотреть онлайн
+                      {t("watchOnline")}
                     </Link>
                   </Button>
 
@@ -157,8 +167,8 @@ export default function AboutPage({
                       }`}
                     />
                     {isFavorite
-                      ? "Убрать из избранного"
-                      : "Добавить в избранное"}
+                      ? t("removeFromFavorites")
+                      : t("addToFavorites")}
                   </Button>
                 </div>
               </div>
@@ -175,7 +185,7 @@ export default function AboutPage({
                     <Tv className="w-5 h-5" />
                   )}
                   <Badge variant="secondary">
-                    {movie.type === "FILM" ? "Фильм" : "Сериал"}
+                    {movie.type === "FILM" ? t("film") : t("series")}
                   </Badge>
                 </div>
 
@@ -234,7 +244,9 @@ export default function AboutPage({
                             {movie.year}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground">Год</p>
+                        <p className="text-sm text-muted-foreground">
+                          {t("year")}
+                        </p>
                       </div>
                     )}
 
@@ -246,7 +258,7 @@ export default function AboutPage({
                             {movie.filmLength}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground">мин</p>
+                        <p className="text-sm text-muted-foreground">min</p>
                       </div>
                     )}
                   </div>
@@ -257,10 +269,16 @@ export default function AboutPage({
               <div className="space-y-4">
                 {movie.genres && movie.genres.length > 0 && (
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">Жанры</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      {t("genres")}
+                    </h3>
                     <div className="flex flex-wrap gap-2">
                       {movie.genres.map((genre, index) => (
-                        <Badge key={index} variant="outline" style={{ paddingTop: "1px", paddingBottom: "4px" }}>
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          style={{ paddingTop: "1px", paddingBottom: "4px" }}
+                        >
                           {genre.genre}
                         </Badge>
                       ))}
@@ -270,7 +288,9 @@ export default function AboutPage({
 
                 {movie.countries && movie.countries.length > 0 && (
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">Страны</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      {t("countries")}
+                    </h3>
                     <div className="flex flex-wrap gap-2">
                       {movie.countries.map((country, index) => (
                         <Badge key={index} variant="outline">
@@ -289,7 +309,7 @@ export default function AboutPage({
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Info className="w-5 h-5 mr-2" />
-                      Описание
+                      {t("description")}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -303,12 +323,12 @@ export default function AboutPage({
               {/* Дополнительная информация */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Дополнительная информация</CardTitle>
+                  <CardTitle>{t("additionalInfo")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   {movie.ratingAgeLimits && (
                     <div className="flex justify-between">
-                      <span>Возраст:</span>
+                      <span>{t("age")}:</span>
                       <Badge>
                         {movie.ratingAgeLimits.replace(/age(\d+)/, "$1+")}
                       </Badge>
@@ -317,20 +337,22 @@ export default function AboutPage({
 
                   {movie.ratingMpaa && (
                     <div className="flex justify-between">
-                      <span>Рейтинг MPAA:</span>
+                      <span>MPAA:</span>
                       <Badge>{movie.ratingMpaa}</Badge>
                     </div>
                   )}
 
                   <div className="flex justify-between">
-                    <span>Тип:</span>
-                    <span>{movie.type === "FILM" ? "Фильм" : "Сериал"}</span>
+                    <span>{t("type")}:</span>
+                    <span>
+                      {movie.type === "FILM" ? t("film") : t("series")}
+                    </span>
                   </div>
 
                   {movie.serial && (
                     <div className="flex justify-between">
-                      <span>Сериал:</span>
-                      <span>Да</span>
+                      <span>{t("series")}:</span>
+                      <span>{locale === "ru" ? "Да" : "Yes"}</span>
                     </div>
                   )}
                 </CardContent>

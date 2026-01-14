@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Card, CardContent } from "./ui/card";
@@ -16,8 +15,13 @@ import { Skeleton } from "./ui/skeleton";
 import { Play, Info, Star, Calendar, Clock } from "lucide-react";
 import { kinopoiskAPI, getMovieId, getMovieRating } from "@/lib/api";
 import { Movie } from "@/types/movie";
+import { translateMovies } from "@/lib/translate";
+import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 export default function Hero() {
+  const locale = useLocale();
+  const t = useTranslations("hero");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [featuredMovies, setFeaturedMovies] = useState<Movie[]>([]);
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
@@ -46,15 +50,22 @@ export default function Hero() {
           "TOP_250_BEST_FILMS",
           1
         );
-        const featured = topResponse.films?.slice(0, 3) || [];
-        setFeaturedMovies(featured);
+        let featured = topResponse.films?.slice(0, 3) || [];
 
         // Загружаем популярные фильмы
         const popularResponse = await kinopoiskAPI.getTopMovies(
           "TOP_100_POPULAR_FILMS",
           1
         );
-        const popular = popularResponse.films?.slice(0, 12) || [];
+        let popular = popularResponse.films?.slice(0, 12) || [];
+
+        // Переводим фильмы если язык не русский
+        if (locale !== "ru") {
+          featured = await translateMovies(featured, locale);
+          popular = await translateMovies(popular, locale);
+        }
+
+        setFeaturedMovies(featured);
         setPopularMovies(popular);
       } catch (error) {
         console.error("Error loading movies:", error);
@@ -79,7 +90,7 @@ export default function Hero() {
     };
 
     loadMovies();
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     if (featuredMovies.length > 0) {
@@ -156,7 +167,7 @@ export default function Hero() {
                     className="bg-red-600 hover:bg-red-700 text-white text-center px-2"
                     style={{ paddingTop: "1px", paddingBottom: "3px" }}
                   >
-                    Рекомендуем
+                    {t("recommended")}
                   </Badge>
                   <div className="flex items-center space-x-4 text-sm text-gray-300">
                     {getMovieRating(currentMovie) && (
@@ -174,7 +185,9 @@ export default function Hero() {
                     {currentMovie.filmLength && (
                       <div className="flex items-center space-x-1">
                         <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
-                        <span>{currentMovie.filmLength} мин</span>
+                        <span>
+                          {currentMovie.filmLength} {t("minutes")}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -211,7 +224,7 @@ export default function Hero() {
                   >
                     <Link href={`/watch/${getMovieId(currentMovie)}`}>
                       <Play className="w-4 h-4" />
-                      Смотреть
+                      {t("watch")}
                     </Link>
                   </Button>
                   <Button
@@ -222,7 +235,7 @@ export default function Hero() {
                   >
                     <Link href={`/about/${getMovieId(currentMovie)}`}>
                       <Info className="w-4 h-4" />
-                      Подробнее
+                      {t("moreInfo")}
                     </Link>
                   </Button>
                 </div>
@@ -251,9 +264,9 @@ export default function Hero() {
       {popularMovies.length > 0 && (
         <div className="container my-10 mx-auto px-4">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-2xl font-bold">Популярные фильмы</h2>
+            <h2 className="text-2xl font-bold">{t("popularMovies")}</h2>
             <Button variant="ghost" asChild>
-              <Link href="/movies">Смотреть все</Link>
+              <Link href="/top">{t("viewAll")}</Link>
             </Button>
           </div>
 

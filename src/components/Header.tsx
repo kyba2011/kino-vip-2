@@ -1,41 +1,35 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
-import { Badge } from "./ui/badge";
-import {
-  Search,
-  User,
-  Settings,
-  LogIn,
-  UserPlus,
-  Film,
-  Bell,
-  Languages,
-  LogOut,
-  UserRoundPlus,
-} from "lucide-react";
+import { Search, LogIn, Film, Languages } from "lucide-react";
 import { UserButton, useUser, useStackApp } from "@stackframe/stack";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter, usePathname } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 
 function Header() {
   const user = useUser();
   const app = useStackApp();
-  const [currentLanguage, setCurrentLanguage] = useState("ru");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const t = useTranslations("header");
 
   const languages = [
     { code: "ru", name: "Русский", flag: "🇷🇺" },
-    { code: "en", name: "English", flag: "🇺🇸" }
+    { code: "en", name: "English", flag: "🇺🇸" },
   ];
+
+  const changeLanguage = (newLocale: "ru" | "en") => {
+    router.push(pathname, { locale: newLocale });
+  };
 
   return (
     <header className="sticky top-0 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 z-50">
@@ -60,9 +54,7 @@ function Header() {
                 const formData = new FormData(e.currentTarget);
                 const query = formData.get("search") as string;
                 if (query.trim()) {
-                  window.location.href = `/search?q=${encodeURIComponent(
-                    query
-                  )}`;
+                  router.push(`/search?q=${encodeURIComponent(query)}`);
                 }
               }}
             >
@@ -71,27 +63,26 @@ function Header() {
                 <Input
                   name="search"
                   type="text"
-                  placeholder="Поиск фильмов, сериалов..."
+                  placeholder={t("search")}
                   className="pl-10 bg-muted/50 border-border focus:ring-primary/50 focus:border-primary"
                 />
               </div>
             </form>
           </div>
 
-          {/* Навигация */}
-
           {/* Авторизация / Профиль */}
           <div className="flex items-center space-x-3">
             {/* Языки */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="flex items-center">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-1"
+                >
                   <Languages className="w-4 h-4" />
                   <span className="hidden sm:inline">
-                    {
-                      languages.find((lang) => lang.code === currentLanguage)
-                        ?.flag
-                    }
+                    {languages.find((lang) => lang.code === locale)?.flag}
                   </span>
                 </Button>
               </DropdownMenuTrigger>
@@ -99,8 +90,8 @@ function Header() {
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
-                    onClick={() => setCurrentLanguage(lang.code)}
-                    className={currentLanguage === lang.code ? "bg-accent" : ""}
+                    onClick={() => changeLanguage(lang.code as "ru" | "en")}
+                    className={locale === lang.code ? "bg-accent" : ""}
                   >
                     <span className="mr-2">{lang.flag}</span>
                     <span>{lang.name}</span>
@@ -110,24 +101,18 @@ function Header() {
             </DropdownMenu>
 
             {user ? (
-              <>
-                {/*Sign out Button*/}
-                <UserButton />
-              </>
+              <UserButton />
             ) : (
-              <>
-                {/*Sign Button*/}
-                <Button
-                  variant="outline"
-                  className="flex items-center gap-2"
-                  asChild
-                >
-                  <Link href={app.urls.signIn}>
-                    <LogIn className="w-3 h-3  " />
-                    <span className="hidden sm:inline">Sign In</span>
-                  </Link>
-                </Button>
-              </>
+              <Button
+                variant="outline"
+                className="flex items-center gap-2"
+                asChild
+              >
+                <Link href={app.urls.signIn}>
+                  <LogIn className="w-3 h-3" />
+                  <span className="hidden sm:inline">{t("signIn")}</span>
+                </Link>
+              </Button>
             )}
           </div>
         </div>
