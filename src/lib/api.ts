@@ -76,6 +76,15 @@ class KinopoiskAPI {
     );
   }
 
+  async searchMovieById(id: number): Promise<MovieDetails | null> {
+    try {
+      return await this.getMovieDetails(id);
+    } catch (error) {
+      console.error(`Movie with ID ${id} not found:`, error);
+      return null;
+    }
+  }
+
   async getMovieDetails(id: number): Promise<MovieDetails> {
     return this.request<MovieDetails>(`/v2.2/films/${id}`);
   }

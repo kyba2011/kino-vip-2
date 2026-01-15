@@ -1,6 +1,6 @@
 {
   "header": {
-    "search": "Search movies, series...",
+    "search": "Search by code or title",
     "signIn": "Sign In",
     "signOut": "Sign Out",
     "profile": "Profile"
@@ -13,6 +13,12 @@
     "top": "Top",
     "lastWatched": "Last",
     "noViews": "No views"
+  },
+  "search": {
+    "resultsByCode": "Results by Code",
+    "resultsByQuery": "Results by Query",
+    "searchResults": "Search Results",
+    "noResults": "No results found"
   },
   "hero": {
     "recommended": "Recommended",
@@ -42,5 +48,10 @@
     "loading": "Loading...",
     "error": "Error",
     "noImage": "No Image"
+  },
+  "auth": {
+    "subtitle": "Your portal to the world of cinema",
+    "terms": "By continuing, you agree to our terms of use",
+    "backToHome": "Back to Home"
   }
 }

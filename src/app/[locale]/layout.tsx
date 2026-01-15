@@ -26,10 +26,16 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const messages = await getMessages();
+  let messages;
+  try {
+    messages = await getMessages();
+  } catch (error) {
+    console.error("Error loading messages:", error);
+    messages = {};
+  }
 
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider messages={messages || {}}>
       <StackProvider app={stackClientApp}>
         <StackTheme>
           <Suspense fallback={<div className="h-16 bg-background border-b" />}>

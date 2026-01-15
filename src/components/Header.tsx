@@ -64,7 +64,7 @@ function Header() {
                   name="search"
                   type="text"
                   placeholder={t("search")}
-                  className="pl-10 bg-muted/50 border-border focus:ring-primary/50 focus:border-primary"
+                  className="pl-10 bg-background/20 backdrop-blur-md border-white/10 rounded-lg focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-white/20 hover:border-white/20 transition-colors"
                 />
               </div>
             </form>
@@ -105,13 +105,13 @@ function Header() {
             ) : (
               <Button
                 variant="outline"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 rounded-lg"
                 asChild
               >
-                <Link href={app.urls.signIn}>
-                  <LogIn className="w-3 h-3" />
+                <a href="/handler/sign-in">
+                  <LogIn />
                   <span className="hidden sm:inline">{t("signIn")}</span>
-                </Link>
+                </a>
               </Button>
             )}
           </div>

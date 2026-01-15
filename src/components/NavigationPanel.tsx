@@ -57,9 +57,20 @@ export default function NavigationPanel() {
             const requiresAuth =
               item.href === "/history" || item.href === "/favorites";
             const linkHref =
-              requiresAuth && !user ? app.urls.signIn : item.href;
+              requiresAuth && !user ? "/handler/sign-in" : item.href;
 
-            return (
+            return requiresAuth && !user ? (
+              <a
+                key={item.href}
+                href={linkHref}
+                className={`flex items-center justify-center p-3 rounded-full transition-all duration-200 hover:scale-110 active:scale-95 ${
+                  isActive ? "bg-accent/50 text-primary" : "hover:bg-accent/30"
+                }`}
+                title={item.label}
+              >
+                <Icon className="w-6 h-6" />
+              </a>
+            ) : (
               <Link
                 key={item.href}
                 href={linkHref}
@@ -89,9 +100,25 @@ export default function NavigationPanel() {
             const requiresAuth =
               item.href === "/history" || item.href === "/favorites";
             const linkHref =
-              requiresAuth && !user ? app.urls.signIn : item.href;
+              requiresAuth && !user ? "/handler/sign-in" : item.href;
 
-            return (
+            return requiresAuth && !user ? (
+              <a
+                key={item.href}
+                href={linkHref}
+                className={`flex items-center justify-center p-3 rounded-full transition-all duration-200 hover:scale-110 group relative ${
+                  isActive ? "bg-accent/50 text-primary" : "hover:bg-accent/30"
+                }`}
+                title={item.label}
+              >
+                <Icon className="w-6 h-6" />
+
+                {/* Tooltip при наведении */}
+                <div className="absolute left-full ml-2 px-2 py-1 bg-popover text-popover-foreground text-sm rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
+                  {item.label}
+                </div>
+              </a>
+            ) : (
               <Link
                 key={item.href}
                 href={linkHref}
