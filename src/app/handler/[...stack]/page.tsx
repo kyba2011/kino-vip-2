@@ -48,7 +48,7 @@ export default async function Handler() {
             </Link>
 
             {/* Форма авторизации */}
-            <div className="bg-card border border-border flex items-center justify-center rounded-3xl shadow-xl py-6 px-4 backdrop-blur-sm w-full overflow-hidden text-sm">
+            <div className="bg-card border border-border flex items-center justify-center rounded-3xl shadow-xl py-6 px-4 backdrop-blur-xs w-full overflow-hidden text-sm">
               <StackHandler fullPage={false} />
             </div>
 

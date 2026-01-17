@@ -111,7 +111,7 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 mt-16 mb-24">
       {/* Результаты по коду (ID) */}
       {movieById && (
         <div className="mb-8">
@@ -145,8 +145,17 @@ export default function SearchPage() {
       )}
 
       {/* Если ничего не найдено */}
-      {!movieById && movies.length === 0 && (
-        <p className="text-muted-foreground">{t("noResults")}</p>
+      {!movieById && movies.length === 0 && query && (
+        <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+          <SearchIcon className="w-16 h-16 text-muted-foreground mb-4" />
+          <p className="text-xl font-medium mb-2">{t("noResults")}</p>
+          <Link
+            href="/"
+            className="mt-4 px-6 py-3 rounded-2xl bg-black/40 backdrop-blur-xs backdrop-saturate-150 border border-white/10 text-white hover:bg-black/50 transition-all shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_0_rgba(0,0,0,0.2)]"
+          >
+            {locale === "ru" ? "Вернуться на главную" : "Back to Home"}
+          </Link>
+        </div>
       )}
     </div>
   );

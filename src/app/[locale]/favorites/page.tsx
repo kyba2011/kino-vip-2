@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Star, Play } from "lucide-react";
+import { Star, Play, Heart } from "lucide-react";
 import { kinopoiskAPI, getMovieRating } from "@/lib/api";
 import { Movie } from "@/types/movie";
 import { translateMovies } from "@/lib/translate";
@@ -64,15 +64,24 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 mt-16 mb-24">
       <h1 className="text-2xl font-bold mb-6">
         {locale === "ru" ? "Избранное" : "Favorites"}
       </h1>
 
       {movies.length === 0 ? (
-        <p className="text-muted-foreground">
-          {locale === "ru" ? "Нет избранных фильмов" : "No favorite movies"}
-        </p>
+        <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+          <Heart className="w-16 h-16 text-muted-foreground mb-4" />
+          <p className="text-xl font-medium mb-2">
+            {locale === "ru" ? "Нет избранных фильмов" : "No favorite movies"}
+          </p>
+          <Link
+            href="/"
+            className="mt-4 px-6 py-3 rounded-2xl bg-black/40 backdrop-blur-xs backdrop-saturate-150 border border-white/10 text-white hover:bg-black/50 transition-all shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_0_rgba(0,0,0,0.2)]"
+          >
+            {locale === "ru" ? "Вернуться на главную" : "Back to Home"}
+          </Link>
+        </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {movies.map((movie) => (

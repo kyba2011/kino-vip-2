@@ -32,21 +32,23 @@ function Header() {
   };
 
   return (
-    <header className="sticky top-0 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 z-50">
+    <header className="fixed top-0 w-full z-50 pt-2">
       <div className="w-full mx-auto px-2 sm:px-4">
         <div className="flex items-center justify-between h-16 gap-2">
-          {/* Логотип */}
-          <div className="flex items-center shrink-0">
+          {/* Логотип - liquid glass bubble */}
+          <div className="hidden md:flex items-center shrink-0">
             <Link
               href="/"
-              className="flex items-center space-x-1 sm:space-x-2 text-lg sm:text-2xl font-bold text-primary font-mono tracking-wider hover:text-primary/80 transition-colors"
+              className="flex items-center space-x-1 sm:space-x-2 px-3 py-2 rounded-2xl bg-black/40 backdrop-blur-[0.0px] backdrop-saturate-150 border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-black/50 transition-all"
             >
-              <Film className="w-6 h-6 sm:w-8 sm:h-8" />
-              <span className="hidden md:inline">KINO.VIP</span>
+              <Film className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+              <span className="inline text-lg sm:text-2xl font-bold text-white font-mono tracking-wider">
+                KINO.VIP
+              </span>
             </Link>
           </div>
 
-          {/* Поиск */}
+          {/* Поиск - liquid glass bubble */}
           <div className="flex-1 max-w-md mx-2 sm:mx-8">
             <form
               onSubmit={(e) => {
@@ -59,29 +61,29 @@ function Header() {
               }}
             >
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 w-4 h-4 z-10" />
                 <Input
                   name="search"
                   type="text"
                   placeholder={t("search")}
-                  className="pl-10 bg-background/20 backdrop-blur-md border-white/10 rounded-lg focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-white/20 hover:border-white/20 transition-colors"
+                  className="pl-10 rounded-full overflow-hidden bg-black/40 backdrop-blur-[0.0px] backdrop-saturate-150 border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_0_rgba(0,0,0,0.2)] text-white placeholder:text-white/50 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-white/30 focus-visible:bg-black/50 hover:border-white/20 hover:bg-black/45 transition-all"
                 />
               </div>
             </form>
           </div>
 
-          {/* Авторизация / Профиль */}
-          <div className="flex items-center space-x-3">
-            {/* Языки */}
+          {/* Авторизация / Профиль - liquid glass bubbles */}
+          <div className="flex items-center gap-2">
+            {/* Языки - liquid glass bubble */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-0.5 px-6 py-4 rounded-full bg-black/40 backdrop-blur-[0.0px] backdrop-saturate-150 border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-black/50 text-white transition-all"
                 >
                   <Languages className="w-4 h-4" />
-                  <span className="hidden sm:inline">
+                  <span className="text-sm">
                     {languages.find((lang) => lang.code === locale)?.flag}
                   </span>
                 </Button>
@@ -101,15 +103,17 @@ function Header() {
             </DropdownMenu>
 
             {user ? (
-              <UserButton />
+              <div className="rounded-full overflow-hidden bg-black/40 backdrop-blur-[0.0px] backdrop-saturate-150 border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_0_rgba(0,0,0,0.2)]">
+                <UserButton />
+              </div>
             ) : (
               <Button
-                variant="outline"
-                className="flex items-center gap-2 rounded-lg"
+                variant="ghost"
+                className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-black/40 backdrop-blur-[0.0px] backdrop-saturate-150 border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-black/50 text-white transition-all"
                 asChild
               >
                 <a href="/handler/sign-in">
-                  <LogIn />
+                  <LogIn className="w-4 h-4" />
                   <span className="hidden sm:inline">{t("signIn")}</span>
                 </a>
               </Button>

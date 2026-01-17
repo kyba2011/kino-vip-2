@@ -126,10 +126,10 @@ export default function Hero() {
   const currentMovie = featuredMovies[currentSlide];
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 mb-24">
       {/* Главный баннер */}
       {currentMovie && (
-        <div className="relative overflow-hidden h-[500px] sm:h-[calc(100vh-64px)]">
+        <div className="relative overflow-hidden h-[500px] sm:h-screen">
           {/* Фоновое изображение с блюром */}
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-xl scale-110"
@@ -264,13 +264,13 @@ export default function Hero() {
       {popularMovies.length > 0 && (
         <div className="container my-10 mx-auto px-4">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-2xl font-bold">{t("popularMovies")}</h2>
+            <h2 className="text-xl sm:text-2xl font-bold">{t("popularMovies")}</h2>
             <Button variant="ghost" asChild>
               <Link href="/top">{t("viewAll")}</Link>
             </Button>
           </div>
 
-          <div className="px-14">
+          <div className=" px-2 md:px-13 ">
             <Carousel className="w-full" opts={{ align: "start" }}>
               <CarouselContent className="-ml-2 md:-ml-4" ref={carouselRef}>
                 {popularMovies.map((movie) => (
@@ -321,8 +321,8 @@ export default function Hero() {
                 ))}
               </CarouselContent>
               <div className="hidden md:block">
-                <CarouselPrevious className="-left-12" />
-                <CarouselNext className="-right-12" />
+                <CarouselPrevious className="-left-13" />
+                <CarouselNext className="-right-13" />
               </div>
             </Carousel>
           </div>

@@ -33,7 +33,7 @@ export default function TopPage() {
         let awaitFilms = awaited.films || [];
 
         // Переводим результаты если язык не русский
-        if (locale !== 'ru') {
+        if (locale !== "ru") {
           [top250Films, popularFilms, awaitFilms] = await Promise.all([
             translateMovies(top250Films, locale),
             translateMovies(popularFilms, locale),
@@ -95,7 +95,7 @@ export default function TopPage() {
     return (
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-6">
-          {locale === 'ru' ? 'Топ фильмов' : 'Top Movies'}
+          {locale === "ru" ? "Топ фильмов" : "Top Movies"}
         </h1>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {Array.from({ length: 12 }).map((_, i) => (
@@ -107,21 +107,21 @@ export default function TopPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 mt-16 mb-24">
       <h1 className="text-2xl font-bold mb-6">
-        {locale === 'ru' ? 'Топ фильмов' : 'Top Movies'}
+        {locale === "ru" ? "Топ фильмов" : "Top Movies"}
       </h1>
 
       <Tabs defaultValue="top250" className="w-full">
         <TabsList className="mb-6">
           <TabsTrigger value="top250">
-            {locale === 'ru' ? 'Топ 250' : 'Top 250'}
+            {locale === "ru" ? "Топ 250" : "Top 250"}
           </TabsTrigger>
           <TabsTrigger value="popular">
-            {locale === 'ru' ? 'Популярные' : 'Popular'}
+            {locale === "ru" ? "Популярные" : "Popular"}
           </TabsTrigger>
           <TabsTrigger value="await">
-            {locale === 'ru' ? 'Ожидаемые' : 'Awaited'}
+            {locale === "ru" ? "Ожидаемые" : "Awaited"}
           </TabsTrigger>
         </TabsList>
 
