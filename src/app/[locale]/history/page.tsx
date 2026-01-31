@@ -45,15 +45,24 @@ export default function HistoryPage() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {history.map((item) => (
-            <Card key={item.id} className="border-0 bg-transparent">
+            <Card
+              key={item.id}
+              className="bg-white/5 backdrop-blur-[0.0px] backdrop-saturate-150 border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 overflow-hidden group"
+            >
               <CardContent className="p-0">
                 <Link href={`/about/${item.id}`}>
-                  <div className="relative group overflow-hidden rounded-lg">
-                    <img
-                      src={item.poster || ""}
-                      alt={item.title}
-                      className="w-full h-75 object-cover rounded-lg transition-transform group-hover:scale-105"
-                    />
+                  <div className="relative overflow-hidden rounded-lg">
+                    {item.poster ? (
+                      <img
+                        src={item.poster || ""}
+                        alt={item.title}
+                        className="w-full h-75 object-cover rounded-lg transition-transform group-hover:scale-110 duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-75 bg-gray-800 rounded-lg flex items-center justify-center">
+                        <span className="text-gray-500">No Image</span>
+                      </div>
+                    )}
                     <div className="absolute top-2 left-2">
                       <Badge className="bg-black/70 text-white">
                         <Clock className="w-3 h-3 mr-1" />
@@ -61,7 +70,7 @@ export default function HistoryPage() {
                       </Badge>
                     </div>
                   </div>
-                  <div className="mt-2">
+                  <div className="mt-2 px-2 pb-2">
                     <h3 className="font-medium text-sm line-clamp-2">
                       {item.title}
                     </h3>

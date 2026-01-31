@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import {
@@ -125,4 +126,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default memo(Header);

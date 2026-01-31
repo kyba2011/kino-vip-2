@@ -31,9 +31,7 @@
   "about": {
     "film": "Film",
     "series": "Series",
-    "watchOnline": "Watch Online",
-    "addToFavorites": "Add to Favorites",
-    "removeFromFavorites": "Remove from Favorites",
+    "watchOnline": "Watch",
     "year": "Year",
     "genres": "Genres",
     "countries": "Countries",

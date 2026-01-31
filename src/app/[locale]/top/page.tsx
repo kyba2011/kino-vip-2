@@ -1,10 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { GlassMorphCard } from "@/components/ui/glass-morph-card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  GlassTabs,
+  GlassTabsContent,
+  GlassTabsList,
+  GlassTabsTrigger,
+} from "@/components/ui/glass-tabs";
 import { Star, Play } from "lucide-react";
 import { kinopoiskAPI, getMovieId, getMovieRating } from "@/lib/api";
 import { Movie } from "@/types/movie";
@@ -57,19 +62,31 @@ export default function TopPage() {
   const renderMovieGrid = (movies: Movie[]) => (
     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
       {movies.map((movie) => (
-        <Card key={getMovieId(movie)} className="border-0 bg-transparent">
-          <CardContent className="p-0">
-            <Link href={`/about/${getMovieId(movie)}`}>
-              <div className="relative group overflow-hidden rounded-lg">
-                <img
-                  src={movie.posterUrlPreview || movie.posterUrl || ""}
-                  alt={movie.nameRu || movie.nameOriginal || ""}
-                  className="w-full h-75 object-cover rounded-lg transition-transform group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
-                  <Play className="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-                {getMovieRating(movie) && (
+        <GlassMorphCard
+          key={getMovieId(movie)}
+          className="h-100"
+          intensity={5}
+        >
+          <Link href={`/about/${getMovieId(movie)}`} className="block h-full">
+            <div className="relative rounded-2xl group h-full flex flex-col pb-3">
+              <div className="shrink-0">
+                {movie.posterUrlPreview || movie.posterUrl ? (
+                  <img
+                    src={movie.posterUrlPreview || movie.posterUrl || ""}
+                    alt={movie.nameRu || movie.nameOriginal || ""}
+                    className="w-full h-75 object-cover rounded-2xl"
+                  />
+                ) : (
+                  <div className="w-full h-75 bg-gray-800 rounded-2xl flex items-center justify-center">
+                    <span className="text-gray-500">No Image</span>
+                  </div>
+                )}
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <Play className="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              {getMovieRating(movie) &&
+                !isNaN(parseFloat(String(getMovieRating(movie) || ""))) && (
                   <div className="absolute top-2 right-2">
                     <Badge className="bg-black/70 text-white">
                       <Star className="w-3 h-3 mr-1 fill-yellow-400 text-yellow-400" />
@@ -77,23 +94,22 @@ export default function TopPage() {
                     </Badge>
                   </div>
                 )}
-              </div>
-              <div className="mt-2 space-y-1">
-                <h3 className="font-medium text-sm line-clamp-2">
-                  {movie.nameRu || movie.nameOriginal}
-                </h3>
-                <p className="text-xs text-muted-foreground">{movie.year}</p>
-              </div>
-            </Link>
-          </CardContent>
-        </Card>
+            </div>
+            <div className="mt-2 space-y-1 px-2 pb-2 grow">
+              <h3 className="font-medium text-sm line-clamp-2">
+                {movie.nameRu || movie.nameOriginal}
+              </h3>
+              <p className="text-xs text-muted-foreground">{movie.year}</p>
+            </div>
+          </Link>
+        </GlassMorphCard>
       ))}
     </div>
   );
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-24">
         <h1 className="text-2xl font-bold mb-6">
           {locale === "ru" ? "Топ фильмов" : "Top Movies"}
         </h1>
@@ -112,25 +128,29 @@ export default function TopPage() {
         {locale === "ru" ? "Топ фильмов" : "Top Movies"}
       </h1>
 
-      <Tabs defaultValue="top250" className="w-full">
-        <TabsList className="mb-6">
-          <TabsTrigger value="top250">
+      <GlassTabs defaultValue="top250" className="w-full">
+        <GlassTabsList className="mb-6">
+          <GlassTabsTrigger value="top250">
             {locale === "ru" ? "Топ 250" : "Top 250"}
-          </TabsTrigger>
-          <TabsTrigger value="popular">
+          </GlassTabsTrigger>
+          <GlassTabsTrigger value="popular">
             {locale === "ru" ? "Популярные" : "Popular"}
-          </TabsTrigger>
-          <TabsTrigger value="await">
+          </GlassTabsTrigger>
+          <GlassTabsTrigger value="await">
             {locale === "ru" ? "Ожидаемые" : "Awaited"}
-          </TabsTrigger>
-        </TabsList>
+          </GlassTabsTrigger>
+        </GlassTabsList>
 
-        <TabsContent value="top250">{renderMovieGrid(topMovies)}</TabsContent>
-        <TabsContent value="popular">
+        <GlassTabsContent value="top250">
+          {renderMovieGrid(topMovies)}
+        </GlassTabsContent>
+        <GlassTabsContent value="popular">
           {renderMovieGrid(popularMovies)}
-        </TabsContent>
-        <TabsContent value="await">{renderMovieGrid(awaitMovies)}</TabsContent>
-      </Tabs>
+        </GlassTabsContent>
+        <GlassTabsContent value="await">
+          {renderMovieGrid(awaitMovies)}
+        </GlassTabsContent>
+      </GlassTabs>
     </div>
   );
 }

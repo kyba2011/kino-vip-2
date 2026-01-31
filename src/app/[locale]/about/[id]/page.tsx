@@ -97,7 +97,7 @@ export default function AboutPage({
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
-            <Skeleton className="w-full h-[600px]" />
+            <Skeleton className="w-full h-150" />
           </div>
           <div className="lg:col-span-2 space-y-4">
             <Skeleton className="h-8 w-3/4" />
@@ -142,12 +142,12 @@ export default function AboutPage({
                     if (skeleton) skeleton.style.display = "block";
                   }}
                 />
-                <Skeleton className="w-full h-[600px] rounded-lg hidden" />
+                <Skeleton className="w-full h-150 rounded-lg hidden" />
 
-                <div className="mt-6 space-y-3">
+                <div className="mt-6 flex gap-3">
                   <Button
                     asChild
-                    className="w-full bg-red-600 hover:bg-red-700 text-white"
+                    className="flex-1 bg-red-600 hover:bg-red-700 text-white"
                     onClick={addToHistory}
                   >
                     <Link href={`/watch/${movie.kinopoiskId}`}>
@@ -158,17 +158,14 @@ export default function AboutPage({
 
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-12 h-12 p-0 shrink-0"
                     onClick={toggleFavorite}
                   >
                     <Heart
-                      className={`w-4 h-4 mr-2 ${
+                      className={`w-5 h-5 ${
                         isFavorite ? "fill-red-500 text-red-500" : ""
                       }`}
                     />
-                    {isFavorite
-                      ? t("removeFromFavorites")
-                      : t("addToFavorites")}
                   </Button>
                 </div>
               </div>

@@ -28,7 +28,7 @@ export default function FavoritesPage() {
 
         // Загружаем детали каждого фильма
         const moviePromises = favorites.map((id: number) =>
-          kinopoiskAPI.getMovieDetails(id)
+          kinopoiskAPI.getMovieDetails(id),
         );
         let results = await Promise.all(moviePromises);
 
@@ -85,16 +85,22 @@ export default function FavoritesPage() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {movies.map((movie) => (
-            <Card key={movie.kinopoiskId} className="border-0 bg-transparent">
-              <CardContent className="p-0">
-                <Link href={`/about/${movie.kinopoiskId}`}>
-                  <div className="relative group overflow-hidden rounded-lg">
+            <Card
+              key={movie.kinopoiskId}
+              className="h-100 bg-white/5 backdrop-blur-[0.0px] backdrop-saturate-150 border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 transition-all duration-300 hover:scale-105"
+            >
+              <CardContent className="p-0 h-full">
+                <Link
+                  href={`/about/${movie.kinopoiskId}`}
+                  className="block h-full"
+                >
+                  <div className="relative group rounded-2xl h-full flex flex-col pb-3">
                     <img
                       src={movie.posterUrlPreview || movie.posterUrl || ""}
                       alt={movie.nameRu || movie.nameOriginal || ""}
-                      className="w-full h-75 object-cover rounded-lg transition-transform group-hover:scale-105"
+                      className="w-full h-75 object-cover rounded-2xl transition-transform group-hover:scale-110 duration-300"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center">
                       <Play className="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     {getMovieRating(movie) && (
@@ -106,7 +112,7 @@ export default function FavoritesPage() {
                       </div>
                     )}
                   </div>
-                  <div className="mt-2 space-y-1">
+                  <div className="mt-2 space-y-1 px-2 pb-2 grow">
                     <h3 className="font-medium text-sm line-clamp-2">
                       {movie.nameRu || movie.nameOriginal}
                     </h3>

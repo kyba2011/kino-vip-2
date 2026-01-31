@@ -31,9 +31,8 @@
   "about": {
     "film": "Фильм",
     "series": "Сериал",
-    "watchOnline": "Смотреть онлайн",
-    "addToFavorites": "Добавить в избранное",
-    "removeFromFavorites": "Убрать из избранного",
+    "watchOnline": "Смотреть",
+  
     "year": "Год",
     "genres": "Жанры",
     "countries": "Страны",

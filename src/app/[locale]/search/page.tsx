@@ -77,19 +77,28 @@ export default function SearchPage() {
     const rating = getMovieRating(movie);
 
     return (
-      <Card key={getMovieId(movie)} className="border-0 bg-transparent">
-        <CardContent className="p-0">
-          <Link href={`/about/${getMovieId(movie)}`}>
-            <div className="relative group overflow-hidden rounded-lg">
-              <img
-                src={movie.posterUrlPreview || movie.posterUrl || ""}
-                alt={movie.nameRu || movie.nameOriginal || ""}
-                className="w-full h-75 object-cover rounded-lg transition-transform group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
+      <Card
+        key={getMovieId(movie)}
+        className="h-100 bg-white/5 backdrop-blur-[0.0px] backdrop-saturate-150 border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 group"
+      >
+        <CardContent className="p-0 h-full">
+          <Link href={`/about/${getMovieId(movie)}`} className="block h-full">
+            <div className="relative rounded-2xl h-full flex flex-col pb-3">
+              {movie.posterUrlPreview || movie.posterUrl ? (
+                <img
+                  src={movie.posterUrlPreview || movie.posterUrl || ""}
+                  alt={movie.nameRu || movie.nameOriginal || ""}
+                  className="w-full h-75 object-cover rounded-2xl transition-transform group-hover:scale-110 duration-300"
+                />
+              ) : (
+                <div className="w-full h-75 bg-gray-800 rounded-2xl flex items-center justify-center">
+                  <span className="text-gray-500">No Image</span>
+                </div>
+              )}
+              <div className="absolute inset-0 flex items-center justify-center">
                 <Play className="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-              {rating && !isNaN(rating) && (
+              {rating && !isNaN(rating) && rating > 0 && (
                 <div className="absolute top-2 right-2">
                   <Badge className="bg-black/70 text-white">
                     <Star className="w-3 h-3 mr-1 fill-yellow-400 text-yellow-400" />
@@ -98,7 +107,7 @@ export default function SearchPage() {
                 </div>
               )}
             </div>
-            <div className="mt-2 space-y-1">
+            <div className="mt-2 space-y-1 px-2 pb-2 grow">
               <h3 className="font-medium text-sm line-clamp-2">
                 {movie.nameRu || movie.nameOriginal}
               </h3>
