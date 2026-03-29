@@ -1,9 +1,7 @@
-import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { StackProvider, StackTheme } from "@stackframe/stack";
-import { stackClientApp } from "../../stack/client";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
+import ProvidersWrapper from "@/components/ProvidersWrapper";
 import GlobalLayout from "@/components/GlobalLayout";
 
 export function generateStaticParams() {
@@ -33,13 +31,9 @@ export default async function LocaleLayout({
   }
 
   return (
-    <NextIntlClientProvider messages={messages || {}}>
-      <StackProvider app={stackClientApp}>
-        <StackTheme>
-          <GlobalLayout />
-          <main className="min-h-screen relative z-10">{children}</main>
-        </StackTheme>
-      </StackProvider>
-    </NextIntlClientProvider>
+    <ProvidersWrapper messages={messages} locale={locale}>
+      <GlobalLayout />
+      <main className="relative z-10">{children}</main>
+    </ProvidersWrapper>
   );
 }

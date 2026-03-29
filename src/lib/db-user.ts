@@ -23,7 +23,7 @@ export async function getOrCreateDbUser() {
     dbUser = await prisma.user.create({
       data: {
         id: stackUser.id,
-        email: stackUser.primaryEmail || undefined,
+        email: stackUser.primaryEmail ?? undefined,
         name: stackUser.displayName || undefined,
         language: "ru", // По умолчанию русский
       },

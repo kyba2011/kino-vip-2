@@ -78,18 +78,24 @@ export default function AboutPage({
   const addToHistory = () => {
     if (!movie) return;
 
-    const history = JSON.parse(localStorage.getItem("history") || "[]");
-    const newHistory = [
-      {
-        id: movie.kinopoiskId,
-        title: movie.nameRu || movie.nameOriginal,
-        poster: movie.posterUrlPreview,
-        watchedAt: new Date().toISOString(),
-      },
-      ...history.filter((item: any) => item.id !== movie.kinopoiskId),
-    ].slice(0, 50); // Ограничиваем историю 50 элементами
-
-    localStorage.setItem("history", JSON.stringify(newHistory));
+    fetch("/api/history", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        movieId: movie.kinopoiskId,
+        nameRu: movie.nameRu,
+        nameOriginal: movie.nameOriginal,
+        posterUrlPreview: movie.posterUrlPreview,
+      }),
+    })
+      .then((res) =>
+        res.json().then((data) => {
+          if (!res.ok)
+            console.error("[history] POST failed:", res.status, data);
+          else console.log("[history] saved:", data);
+        }),
+      )
+      .catch((e) => console.error("[history] fetch error:", e));
   };
 
   if (loading) {
@@ -148,9 +154,11 @@ export default function AboutPage({
                   <Button
                     asChild
                     className="flex-1 bg-red-600 hover:bg-red-700 text-white"
-                    onClick={addToHistory}
                   >
-                    <Link href={`/watch/${movie.kinopoiskId}`}>
+                    <Link
+                      href={`/watch/${movie.kinopoiskId}`}
+                      onClick={addToHistory}
+                    >
                       <Play className="w-4 h-4 mr-2" />
                       {t("watchOnline")}
                     </Link>

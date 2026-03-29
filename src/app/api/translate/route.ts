@@ -6,11 +6,11 @@ const translationCache = new Map<string, string>();
 // Используем бесплатный API MyMemory Translation
 async function translateText(
   text: string,
-  targetLang: string
+  targetLang: string,
 ): Promise<string> {
   try {
     const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
-      text
+      text,
     )}&langpair=ru|${targetLang}`;
     const response = await fetch(url);
     const data = await response.json();
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     if (!text || !targetLang) {
       return NextResponse.json(
         { error: "Missing text or targetLang" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -61,16 +61,12 @@ export async function POST(request: NextRequest) {
     // Ограничиваем размер кеша
     if (translationCache.size > 1000) {
       const firstKey = translationCache.keys().next().value;
-      translationCache.delete(firstKey);
+      if (firstKey !== undefined) translationCache.delete(firstKey);
     }
 
     return NextResponse.json({ translatedText, cached: false });
   } catch (error) {
     console.error("Translation API error:", error);
-    const body = await request.json();
-    return NextResponse.json(
-      { error: "Translation failed", translatedText: body.text || text },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Translation failed" }, { status: 500 });
   }
 }

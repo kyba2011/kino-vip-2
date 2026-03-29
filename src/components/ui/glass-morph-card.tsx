@@ -98,7 +98,7 @@ const GlassMorphCard = React.forwardRef<HTMLDivElement, GlassMorphCardProps>(
         >
           {/* Dynamic light reflection */}
           <div
-            className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-2xl"
             style={{
               background: `radial-gradient(circle at ${lightPosition.x}% ${lightPosition.y}%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
               opacity: isHovered ? 1 : 0,

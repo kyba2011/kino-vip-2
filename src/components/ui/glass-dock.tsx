@@ -246,14 +246,6 @@ const GlassDock = React.forwardRef<HTMLDivElement, GlassDockProps>(
               </div>
             );
 
-            if (item.href) {
-              return (
-                <a key={item.id} href={item.href} className="contents">
-                  {DockItemContent}
-                </a>
-              );
-            }
-
             return (
               <React.Fragment key={item.id}>{DockItemContent}</React.Fragment>
             );
