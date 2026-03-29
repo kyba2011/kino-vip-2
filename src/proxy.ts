@@ -8,7 +8,7 @@ const intlMiddleware = createMiddleware({
   localeDetection: false, // Отключаем автоопределение для стабильности билда
 });
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // 1. Исключаем все системные пути Next.js и API
