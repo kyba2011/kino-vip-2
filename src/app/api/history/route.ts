@@ -1,9 +1,11 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from "next/server";
 import { stackServerApp } from "@/stack/server";
-import { prisma } from "@/lib/prisma";
 
 // GET /api/history — получить историю текущего пользователя
 export async function GET() {
+  const { prisma } = await import("@/lib/prisma"); // Импорт ВНУТРИ функции
   const stackUser = await stackServerApp.getUser();
   if (!stackUser) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -30,6 +32,7 @@ export async function GET() {
 
 // POST /api/history — добавить фильм в историю
 export async function POST(req: NextRequest) {
+  const { prisma } = await import("@/lib/prisma"); // Импорт ВНУТРИ функции
   const stackUser = await stackServerApp.getUser();
   if (!stackUser) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -68,7 +71,7 @@ export async function POST(req: NextRequest) {
 
   // Удаляем старую запись если есть, добавляем новую
   await prisma.userHistory.deleteMany({
-    where: { userId: stackUser.id, movieId },
+    where: { userId: stackUser.id, movieId: movieId },
   });
 
   const entry = await prisma.userHistory.create({
@@ -84,6 +87,7 @@ export async function POST(req: NextRequest) {
 
 // DELETE /api/history?movieId=123 — удалить из истории
 export async function DELETE(req: NextRequest) {
+  const { prisma } = await import("@/lib/prisma"); // Импорт ВНУТРИ функции
   const stackUser = await stackServerApp.getUser();
   if (!stackUser) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

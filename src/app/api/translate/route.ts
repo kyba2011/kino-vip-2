@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from "next/server";
 
 // Кеш переводов в памяти (для production лучше использовать Redis)

@@ -1,9 +1,11 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from "next/server";
 import { stackServerApp } from "@/stack/server";
-import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
+    const { prisma } = await import("@/lib/prisma"); // Импорт ВНУТРИ функции
     const stackUser = await stackServerApp.getUser();
 
     // Проверяем подключение к БД
